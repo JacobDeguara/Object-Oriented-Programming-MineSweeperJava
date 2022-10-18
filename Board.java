@@ -106,7 +106,7 @@ public class Board {
                         System.out.print("*");
                     }
                 }else{
-                    System.out.print("?");
+                    System.out.print("-");
                 }
                 //wall
                 System.out.print(" | ");
