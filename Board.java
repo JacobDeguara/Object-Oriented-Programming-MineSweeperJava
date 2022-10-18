@@ -40,7 +40,7 @@ public class Board {
 
             if(board[rand1][rand2] >= 0){ // if not -1 create bomb
                 board[rand1][rand2] = -1;
-                incrementBoard(rand1, rand2, x);
+                incrementBoard(rand1, rand2);
             }else{ //else try again
                 i--;
             }
@@ -48,12 +48,12 @@ public class Board {
     }
 
     //increments all areas around the '(x,y)cord' in board excluding any bombs '-1'
-    public void incrementBoard(int x,int y,int outside){
+    public void incrementBoard(int x,int y){
         //look around the number
         for (int i = x-1; i < x+2; i++) {
             for (int j = y-1; j < y+2; j++) {
                 //check for out of bounce (-1) or (greater then x size)
-                if(i >= 0 && j >= 0 && i < outside && j < outside){
+                if(i >= 0 && j >= 0 && i < board.length && j < board[0].length){
                     //check for bomb
                     if(board[i][j] != -1){
                         board[i][j] += 1;
@@ -84,18 +84,21 @@ public class Board {
     public void printBoardWithShowing(){
         // print letters on top
         System.out.print("     ");
-        for (int i = 0; i < board.length; i++) {
-            char c = (char)(i+97);
-            System.out.print(c+"   ");
+        for (int i = 0; i < board.length; i++){
+            if(i<10){
+                System.out.print((i)+"   ");
+            }else{
+                System.out.print((i)+"  ");
+            }
         }
         System.out.print("\n");
 
         for (int i = 0; i < board.length; i++) {
             //wall
-            if(i<9){
-                System.out.print(" "+(i+1)+" | ");
+            if(i<10){
+                System.out.print(" "+(i)+" | ");
             }else{
-                System.out.print((i+1)+" | ");
+                System.out.print((i)+" | ");
             }
             for (int j = 0; j < board[0].length; j++) {
                 //hidden or number
@@ -121,34 +124,35 @@ public class Board {
      * to play minesweeper
      * returns; 1 if selected successfully, 0 if selected unsuccessfully, -1 if selected mine
      */
-    public int selectOnBoard(int x,int y,int outside){
+    public int selectOnBoard(int x,int y){
 
         boolean Test;
-        Test = x >= 0 && y >= 0 && x < outside && y < outside; //out of bounce
+        Test = x >= 0 && y >= 0 && x < board.length && y < board[0].length; //out of bounce
         if(Test != true){
             return 0; //unsucessfull if out of bounce
         }
 
-        if(showing[x][y] = true){
+        if(showing[x][y] == true){
             return 0; //unsuccessfull if selected an already showing selection
         }
 
         if(board[x][y] == -1){
-            showing[x][y] = true;
             return -1; //failer case if selected a bomb
         }
 
-        if(board[x][y] >= 0){
+        if(board[x][y] > 0){
             showing[x][y] = true;
             return 1;
         }
 
         if(board[x][y] == 0){
             showing[x][y] = true;
-            selectOnBoard(x+1, y,outside); //recursive chekcing
-            selectOnBoard(x, y+1,outside);
-            selectOnBoard(x-1, y,outside);
-            selectOnBoard(x, y-1,outside);
+            selectOnBoard(x+1, y); //recursive chekcing
+            selectOnBoard(x, y+1);
+            selectOnBoard(x+1, y+1);
+            selectOnBoard(x-1, y);
+            selectOnBoard(x, y-1);
+            selectOnBoard(x-1, y-1);
             return 1;
         }
 
@@ -157,6 +161,22 @@ public class Board {
 
     /* input: void
      * checks if board finished by checking if not a single false(in showing) is a number greater then 1(in board)
-     * returns; 0 for failer case, 1 for success case   
+     * returns; 0 for failer case, 1 for success case    (considering we havent selected a bomb)
      */
+    public int isItFinished(){
+        boolean success =true;
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                if(board[i][j] != -1){ //if not bomb
+                    success = showing[i][j] == true; //is showing true?
+                }
+                if(success == false){ //if showing is not true 
+                    return 0; //failer case
+                }
+            }
+        }
+        //if whole board is considered true
+        return 1; //success case
+    }
+
 }
