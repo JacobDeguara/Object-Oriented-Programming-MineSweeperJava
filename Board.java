@@ -121,6 +121,39 @@ public class Board {
      * to play minesweeper
      * returns; 1 if selected successfully, 0 if selected unsuccessfully, -1 if selected mine
      */
+    public int selectOnBoard(int x,int y,int outside){
+
+        boolean Test;
+        Test = x >= 0 && y >= 0 && x < outside && y < outside; //out of bounce
+        if(Test != true){
+            return 0; //unsucessfull if out of bounce
+        }
+
+        if(showing[x][y] = true){
+            return 0; //unsuccessfull if selected an already showing selection
+        }
+
+        if(board[x][y] == -1){
+            showing[x][y] = true;
+            return -1; //failer case if selected a bomb
+        }
+
+        if(board[x][y] >= 0){
+            showing[x][y] = true;
+            return 1;
+        }
+
+        if(board[x][y] == 0){
+            showing[x][y] = true;
+            selectOnBoard(x+1, y,outside); //recursive chekcing
+            selectOnBoard(x, y+1,outside);
+            selectOnBoard(x-1, y,outside);
+            selectOnBoard(x, y-1,outside);
+            return 1;
+        }
+
+        return 0; // unknown unsuccessful case 
+    }
 
     /* input: void
      * checks if board finished by checking if not a single false(in showing) is a number greater then 1(in board)
