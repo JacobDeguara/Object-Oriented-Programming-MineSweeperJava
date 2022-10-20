@@ -147,7 +147,7 @@ public class Board {
 
         if(board[x][y] == 0){
             showing[x][y] = true;
-            selectOnBoard(x+1, y); //recursive chekcing
+            selectOnBoard(x+1, y); //recursive checking
             selectOnBoard(x, y+1);
             selectOnBoard(x+1, y+1);
             selectOnBoard(x-1, y);

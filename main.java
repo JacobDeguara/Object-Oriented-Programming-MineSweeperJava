@@ -6,7 +6,7 @@ public class main {
         int result = 0;
         Scanner myObj = new Scanner(System.in);  // Create a Scanner object
         Board x = new Board(16); //create Board object
-        x.addBombs(16, 5); //add the bombs and numbers
+        x.addBombs(16, 40); //add the bombs and numbers
         while(result == 0){
             x.printBoardWithShowing(); 
             System.out.println("Enter 2 Numbers (For (x,y) Ex | x y | )");
