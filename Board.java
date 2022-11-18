@@ -83,7 +83,7 @@ public class Board {
      * Additonally it will provide a more readable board for the user*/
     public void printBoardWithShowing(){
         // print letters on top
-        System.out.print("     ");
+        System.out.print(" x\\y ");
         for (int i = 0; i < board.length; i++){
             if(i<10){
                 System.out.print((i)+"   ");
